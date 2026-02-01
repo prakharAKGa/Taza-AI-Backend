@@ -19,7 +19,6 @@ exports.sendOtp = catchAsync(async (req, res) => {
   });
 });
 
-
 exports.verifyOtp = catchAsync(async (req, res) => {
   const { phone, otp } = req.body;
 
@@ -45,6 +44,12 @@ exports.verifyOtp = catchAsync(async (req, res) => {
   res.json({
     success: true,
     token,
-    user,
+    user: {
+      _id: user._id,
+      phone: user.phone,
+      profileType: user.profileType,
+      profileCompleted: user.profileCompleted,
+      isPremium: user.isPremium,
+    },
   });
 });

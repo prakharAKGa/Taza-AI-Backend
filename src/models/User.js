@@ -8,19 +8,28 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
 
+
     name: String,
+
     profileType: {
       type: String,
       enum: ['PERSONAL', 'BUSINESS'],
+      default: null,
     },
+
     photoUrl: String,
 
-  
     about: String,
     contactDetails: String,
     organizationDetails: String,
 
-    // 💎 PREMIUM
+
+    profileCompleted: {
+      type: Boolean,
+      default: false,
+    },
+
+ 
     isPremium: {
       type: Boolean,
       default: false,

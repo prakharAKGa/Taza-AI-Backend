@@ -20,7 +20,6 @@ exports.getProfile = catchAsync(async (req, res) => {
 });
 
 
-
 exports.updateProfile = catchAsync(async (req, res) => {
   const {
     name,
@@ -38,7 +37,7 @@ exports.updateProfile = catchAsync(async (req, res) => {
 
   const features = getUserFeatures(user);
 
-
+  // Basic updates
   if (name) user.name = name;
   if (profileType) user.profileType = profileType;
   if (typeof showDate !== 'undefined') user.showDate = showDate;
@@ -47,12 +46,8 @@ exports.updateProfile = catchAsync(async (req, res) => {
     user.photoUrl = req.file.path;
   }
 
-
-  if (
-    about ||
-    contactDetails ||
-    organizationDetails
-  ) {
+  // Locked fields (premium)
+  if (about || contactDetails || organizationDetails) {
     if (!features.canEditLockedFields) {
       throw new AppError('Upgrade to Premium to edit locked fields', 403);
     }
@@ -62,13 +57,28 @@ exports.updateProfile = catchAsync(async (req, res) => {
     if (organizationDetails) user.organizationDetails = organizationDetails;
   }
 
+  // ✅ AUTO MARK PROFILE COMPLETED
+  if (user.profileType === 'PERSONAL') {
+    if (user.name && user.photoUrl) {
+      user.profileCompleted = true;
+    }
+  }
+
+  if (user.profileType === 'BUSINESS') {
+    if (user.organizationDetails && user.photoUrl) {
+      user.profileCompleted = true;
+    }
+  }
+
   await user.save();
 
   res.json({
     success: true,
     message: 'Profile updated',
-    user,
+    user: {
+      profileType: user.profileType,
+      profileCompleted: user.profileCompleted,
+    },
     features,
   });
 });
-
