@@ -20,14 +20,8 @@ app.use(rateLimit({
 }));
 
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 
-app.use('/auth', authLimiter, authRoutes);
+
 
 
 app.use(express.json({ limit: '10mb' }));
@@ -42,7 +36,7 @@ app.use('/subscription', subscriptionRoutes);
 
 app.use('/user', userRoutes);
 
-
+app.use('/auth', authRoutes);
 
 
 app.get('/', (req, res) => {
