@@ -3,7 +3,7 @@ const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 const { getUserFeatures } = require('../utils/features');
 
-const Download = require('../models/Download'); // ✅ ADD THIS
+const Download = require('../models/Download'); 
 exports.getProfile = catchAsync(async (req, res) => {
   const user = await User.findById(req.user.userId);
 
@@ -13,7 +13,6 @@ exports.getProfile = catchAsync(async (req, res) => {
 
   const features = getUserFeatures(user);
 
-  /* ✅ FETCH USER DOWNLOADS */
   const downloads = await Download.find({
     userId: user._id,
   })
@@ -47,7 +46,6 @@ exports.updateProfile = catchAsync(async (req, res) => {
 
   const features = getUserFeatures(user);
 
-  /* ---------------- BASIC FIELDS (ALWAYS EDITABLE) ---------------- */
 
   if (typeof name === 'string') {
     user.name = name.trim();
@@ -61,14 +59,13 @@ exports.updateProfile = catchAsync(async (req, res) => {
     user.showDate = showDate;
   }
 
-  // Photo update (Flutter URL or multer upload)
   if (req.file?.path) {
     user.photoUrl = req.file.path;
   } else if (typeof photoUrl === 'string') {
     user.photoUrl = photoUrl;
   }
 
-  /* ---------------- LOCKED FIELDS (PREMIUM ONLY) ---------------- */
+
 
   const wantsLockedUpdate =
     typeof about === 'string' ||
@@ -94,7 +91,7 @@ exports.updateProfile = catchAsync(async (req, res) => {
     user.organizationDetails = organizationDetails.trim();
   }
 
-  /* ---------------- PROFILE COMPLETION LOGIC ---------------- */
+
 
   if (user.profileType === 'PERSONAL') {
     user.profileCompleted = Boolean(

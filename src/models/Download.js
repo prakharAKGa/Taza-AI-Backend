@@ -9,13 +9,13 @@ const downloadSchema = new mongoose.Schema(
       index: true,
     },
 
-    // Cloudinary secure URL
+   
     imageUrl: {
       type: String,
       required: true,
     },
 
-    // true = watermark present
+  
     isBranded: {
       type: Boolean,
       default: true,

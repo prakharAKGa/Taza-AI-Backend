@@ -4,7 +4,7 @@ const User = require('../models/User');
 const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 
-/* ---------------- GET PLANS ---------------- */
+
 
 exports.getPlans = catchAsync(async (req, res) => {
   const plans = await SubscriptionPlan.find({ isActive: true });
@@ -15,7 +15,6 @@ exports.getPlans = catchAsync(async (req, res) => {
   });
 });
 
-/* ---------------- ACTIVATE PREMIUM ---------------- */
 
 exports.activatePremium = catchAsync(async (req, res) => {
   const { planKey } = req.body;

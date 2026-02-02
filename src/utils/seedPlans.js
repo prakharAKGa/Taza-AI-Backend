@@ -1,7 +1,6 @@
-// ✅ DNS FIX (MUST BE FIRST)
+
 require('./dnsFix');
 
-// ✅ ENV
 require('dotenv').config();
 
 const mongoose = require('mongoose');

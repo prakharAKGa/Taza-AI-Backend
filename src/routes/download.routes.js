@@ -4,7 +4,7 @@ const Download = require('../models/Download');
 router.post('/', auth, async (req, res) => {
   const { imageUrl, isBranded } = req.body;
 
-  const userId = req.user.userId; // ✅ FIX
+  const userId = req.user.userId;
 
   if (!userId) {
     return res.status(401).json({

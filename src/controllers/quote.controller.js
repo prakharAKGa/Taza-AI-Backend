@@ -1,7 +1,6 @@
 const Quote = require('../models/Quote');
 const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
-
 exports.getQuotesByCategory = catchAsync(async (req, res) => {
   const { category, page = 1, limit = 1 } = req.query;
 
@@ -9,26 +8,33 @@ exports.getQuotesByCategory = catchAsync(async (req, res) => {
     throw new AppError('Category is required', 400);
   }
 
+  const pageNum = Number(page);
+  const limitNum = Number(limit);
+
   const quotes = await Quote.find({
     category,
     isActive: true,
   })
-    .skip((page - 1) * limit)
-    .limit(Number(limit))
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
     .sort({ createdAt: -1 });
 
+
   if (quotes.length === 0) {
-    throw new AppError('No quotes found', 404);
+    return res.status(200).json({
+      success: true,
+      page: pageNum,
+      quotes: [],
+      message: 'No quotes found for this category',
+    });
   }
 
-  res.json({
+  res.status(200).json({
     success: true,
-    page: Number(page),
+    page: pageNum,
     quotes,
   });
 });
-
-
 exports.getCategories = (req, res) => {
   res.json({
     success: true,

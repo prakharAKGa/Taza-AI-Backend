@@ -7,15 +7,15 @@ const Quote = require('../models/Quote');
 
 const seedQuotes = async () => {
   try {
-    console.log('🔗 Connecting to MongoDB...');
+    console.log('Connecting to MongoDB...');
     await mongoose.connect(process.env.MONGO_URI);
 
-    console.log('🧹 Clearing old quotes...');
+    console.log(' Clearing old quotes...');
     await Quote.deleteMany();
 
-    console.log('📥 Inserting quotes...');
+    console.log('Inserting quotes...');
     await Quote.insertMany([
-      // 🌅 GOOD MORNING (3)
+    
       {
         category: 'GOOD_MORNING',
         textHindi: 'सुप्रभात! आपका दिन मंगलमय हो',
@@ -35,7 +35,6 @@ const seedQuotes = async () => {
           'https://res.cloudinary.com/dhg6zx0nd/image/upload/v1769968632/6_hsnbil.jpg',
       },
 
-      // 💪 MOTIVATIONAL (3)
       {
         category: 'MOTIVATIONAL',
         textHindi: 'संघर्ष ही सफलता की कुंजी है',
@@ -55,7 +54,6 @@ const seedQuotes = async () => {
           'https://res.cloudinary.com/dhg6zx0nd/image/upload/v1769968794/7_xvl35e.jpg',
       },
 
-      // ✍️ SHAYARI (3)
       {
         category: 'SHAYARI',
         textHindi: 'हर लम्हा खूबसूरत है',
@@ -75,7 +73,7 @@ const seedQuotes = async () => {
           'https://res.cloudinary.com/dhg6zx0nd/image/upload/v1769968868/10_jfp7pj.jpg',
       },
 
-      // 🛕 RELIGIOUS (2)
+  
       {
         category: 'RELIGIOUS',
         textHindi: 'ईश्वर पर विश्वास रखो, सब अच्छा होगा',
@@ -89,7 +87,7 @@ const seedQuotes = async () => {
           'https://res.cloudinary.com/dhg6zx0nd/image/upload/v1769968925/19_wraelc.jpg',
       },
 
-      // ❤️ LOVE (2)
+  
       {
         category: 'LOVE',
         textHindi: 'प्यार हर दर्द की दवा है',
@@ -103,7 +101,7 @@ const seedQuotes = async () => {
           'https://res.cloudinary.com/dhg6zx0nd/image/upload/v1769968968/17_oopyrx.jpg',
       },
 
-      // 🎉 FESTIVAL (2)
+
       {
         category: 'FESTIVAL',
         textHindi: 'त्योहार खुशियों का संदेश लाते हैं',
@@ -118,10 +116,10 @@ const seedQuotes = async () => {
       },
     ]);
 
-    console.log('✅ 15 Quotes seeded successfully');
+    console.log(' 15 Quotes seeded successfully');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error seeding quotes:', error);
+    console.error(' Error seeding quotes:', error);
     process.exit(1);
   }
 };
