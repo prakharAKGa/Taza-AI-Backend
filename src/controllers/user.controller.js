@@ -15,13 +15,20 @@ exports.getProfile = catchAsync(async (req, res) => {
 
   const features = getUserFeatures(user);
 
+  // 🔥 FETCH USER DOWNLOADS
+  const downloads = await Download.find({
+    userId: user._id,
+  })
+    .select('imageUrl isBranded createdAt')
+    .sort({ createdAt: -1 });
+
   res.status(200).json({
     success: true,
     user,
     features,
+    downloads,
   });
 });
-
 /* ======================================================
    UPDATE USER PROFILE
 ====================================================== */
