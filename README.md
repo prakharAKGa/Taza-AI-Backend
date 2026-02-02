@@ -1,46 +1,27 @@
-📦 Taza AI Backend
 
-Backend service for Taza AI, a quote-based image generation platform with premium features, watermark control, downloads, and user profiles.
+# 🚀 Taza AI Backend
 
-🚀 Features
+Backend service for **Taza AI**, a quote-based image generation and sharing platform with premium features, watermark control, and user profiles.
 
-🔐 JWT Authentication (OTP based)
+---
 
-👤 User Profile Management (Personal / Business)
+## 🛠 Tech Stack
 
-💎 Premium Subscription Support
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- JWT Authentication
+- Cloudinary (Image Storage)
+- Multer (File Uploads)
+- Express Rate Limit
+- Helmet (Security)
 
-🖼️ Quote Templates with Categories
+---
 
-✍️ Edit & Generate Quote Images
+## 📁 Project Structure
 
-☁️ Cloudinary Image Upload
+```
 
-📥 Download History Tracking
-
-🚫 Watermark control (Premium)
-
-🛡️ Rate Limiting & Security Headers
-
-🛠️ Tech Stack
-
-Node.js
-
-Express.js
-
-MongoDB + Mongoose
-
-JWT Authentication
-
-Cloudinary
-
-Multer
-
-Helmet
-
-Express Rate Limit
-
-📁 Project Structure
 src/
 │
 ├── controllers/
@@ -78,16 +59,22 @@ src/
 ├── app.js
 └── server.js
 
-⚙️ Environment Variables
+```
 
-Create a .env file in root:
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory:
+
+```
 
 PORT=5000
 NODE_ENV=production
 
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/taza_ai
+MONGO_URI=xxxx
 
-JWT_SECRET=super_secret_key
+JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=7d
 
 CLOUDINARY_CLOUD_NAME=xxxxx
@@ -95,154 +82,199 @@ CLOUDINARY_API_KEY=xxxxx
 CLOUDINARY_API_SECRET=xxxxx
 CLOUDINARY_UPLOAD_PRESET=xxxxx
 
-▶️ Installation & Run
+```
+
+---
+
+## ▶️ Installation & Run
+
+```
+
 npm install
-npm run dev      # development
-npm start        # production
+npm run dev      # Development
+npm start        # Production
 
-🔐 Authentication Flow
+```
 
-Send OTP
+---
+
+## 🔐 Authentication APIs
+
+### Send OTP
+```
 
 POST /auth/send-otp
 
+```
 
-Verify OTP
+### Verify OTP
+```
 
 POST /auth/verify-otp
 
+```
 
-Returns:
+Response:
+```
 
 {
-  "token": "JWT_TOKEN"
+"token": "JWT_TOKEN"
 }
 
+```
 
 Use this token in headers:
 
-Authorization: Bearer <TOKEN>
+```
 
-👤 User APIs
-🔹 Get Profile
+Authorization: Bearer <JWT_TOKEN>
+
+```
+
+---
+
+## 👤 User APIs
+
+### Get User Profile
+```
+
 GET /user/me
 
+```
 
 Response:
+```
 
 {
-  "success": true,
-  "user": {...},
-  "features": {...},
-  "downloads": [...]
+"success": true,
+"user": {},
+"features": {},
+"downloads": []
 }
 
-🔹 Update Profile
+```
+
+---
+
+### Update User Profile
+```
+
 PUT /user/me
 
+```
 
-Editable:
-
-name
-
-photo
-
-profileType
-
-showDate
+Editable fields:
+- name
+- profileType
+- photo
+- showDate
 
 Premium only:
+- about
+- contactDetails
+- organizationDetails
 
-about
+---
 
-contactDetails
+## 🖼 Quote APIs
 
-organizationDetails
+### Get Categories
+```
 
-🖼️ Quote APIs
-🔹 Get Categories
 GET /quotes/categories
 
-🔹 Get Quotes by Category
+```
+
+---
+
+### Get Quotes by Category
+```
+
 GET /quotes?category=GOOD_MORNING&page=1&limit=1
 
+```
 
-Empty state response (NO ERROR):
+If no quotes found:
+```
 
 {
-  "success": true,
-  "quotes": [],
-  "message": "No quotes found for this category"
+"success": true,
+"quotes": [],
+"message": "No quotes found for this category"
 }
 
-📥 Download APIs
-🔹 Save Download (after Cloudinary upload)
+```
+
+---
+
+## 📥 Download APIs
+
+### Save Download
+```
+
 POST /downloads
 
+```
 
 Body:
+```
 
 {
-  "imageUrl": "https://cloudinary.com/image.png",
-  "isBranded": true
+"imageUrl": "[https://cloudinary.com/image.png](https://cloudinary.com/image.png)",
+"isBranded": true
 }
 
-🔹 Get User Downloads
+```
+
+---
+
+### Get User Downloads
+```
+
 GET /downloads
 
-💎 Subscription APIs
-GET /subscription/plans
-POST /subscription/activate
+```
 
+---
 
-Used to unlock:
+## 💎 Subscription Features
 
-No watermark
+| Feature | Free | Premium |
+|-------|------|---------|
+| Remove watermark | ❌ | ✅ |
+| Custom text | ❌ | ✅ |
+| Custom image | ❌ | ✅ |
+| Download without branding | ❌ | ✅ |
+| Edit locked fields | ❌ | ✅ |
 
-Custom text/image
+---
 
-Locked profile fields
+## 🛡 Security
 
-🧠 Premium Feature Logic
-Feature	Free	Premium
-Watermark removal	❌	✅
-Custom text	❌	✅
-Custom image	❌	✅
-Download without branding	❌	✅
-Edit locked fields	❌	✅
-🛡️ Security
+- JWT authentication
+- Helmet security headers
+- Rate limiting (300 requests / 15 minutes)
+- Centralized error handling
 
-Helmet enabled
+---
 
-Rate limiting (300 req / 15 min)
+## 🌍 Base URL
 
-JWT verification middleware
+```
 
-Centralized error handling
+[https://taza-ai-backend-production.up.railway.app](https://taza-ai-backend-production.up.railway.app)
 
-🧪 Error Handling Example
-{
-  "success": false,
-  "message": "Upgrade to Premium to edit locked fields"
-}
+```
 
-🌍 Base URL
-https://taza-ai-backend-production.up.railway.app
+---
 
-📌 Future Improvements
+## 👨‍💻 Author
 
-Payment Gateway (Razorpay / Stripe)
-
-Admin panel for quotes
-
-Analytics for downloads
-
-CDN caching
-
-Webhook support
-
-👨‍💻 Author
-
-Prakhar Srivastava
+**Prakhar Srivastava**  
 Flutter & Backend Developer
-🚀 Built for scalable mobile-first apps
+
+---
+
+
+
+
