@@ -14,14 +14,20 @@ const app = express();
 app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors());
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1000,
+}));
 
 
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 300,
-  })
-);
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use('/auth', authLimiter, authRoutes);
 
 
 app.use(express.json({ limit: '10mb' }));
@@ -36,7 +42,7 @@ app.use('/subscription', subscriptionRoutes);
 
 app.use('/user', userRoutes);
 
-app.use('/auth', authRoutes);
+
 
 
 app.get('/', (req, res) => {
