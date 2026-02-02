@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth.middleware');
-const { activatePremium } = require('../controllers/subscription.controller');
+const {
+  getPlans,
+  activatePremium,
+} = require('../controllers/subscription.controller');
 
+router.get('/plans', getPlans);
 router.post('/activate', auth, activatePremium);
 
 module.exports = router;

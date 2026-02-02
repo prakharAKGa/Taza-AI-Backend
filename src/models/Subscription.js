@@ -5,10 +5,12 @@ const subscriptionSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
     },
     plan: {
       type: String,
       enum: ['MONTHLY', 'YEARLY'],
+      required: true,
     },
     price: Number,
     status: {

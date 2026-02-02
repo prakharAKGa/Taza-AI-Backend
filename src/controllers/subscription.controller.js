@@ -1,41 +1,49 @@
-const User = require('../models/User');
 const Subscription = require('../models/Subscription');
+const SubscriptionPlan = require('../models/SubscriptionPlan');
+const User = require('../models/User');
 const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 
+/* ---------------- GET PLANS ---------------- */
+
+exports.getPlans = catchAsync(async (req, res) => {
+  const plans = await SubscriptionPlan.find({ isActive: true });
+
+  res.json({
+    success: true,
+    plans,
+  });
+});
+
+/* ---------------- ACTIVATE PREMIUM ---------------- */
+
 exports.activatePremium = catchAsync(async (req, res) => {
-  const { plan } = req.body;
+  const { planKey } = req.body;
+  const userId = req.user.userId;
 
-  if (!['MONTHLY', 'YEARLY'].includes(plan)) {
-    throw new AppError('Invalid plan', 400);
-  }
+  const plan = await SubscriptionPlan.findOne({ key: planKey });
+  if (!plan) throw new AppError('Invalid plan', 400);
 
-  const user = await User.findById(req.user.userId);
-  if (!user) {
-    throw new AppError('User not found', 404);
-  }
-
-  const now = new Date();
-  const endDate =
-    plan === 'MONTHLY'
-      ? new Date(now.setMonth(now.getMonth() + 1))
-      : new Date(now.setFullYear(now.getFullYear() + 1));
-
-  user.isPremium = true;
-  user.premiumExpiresAt = endDate;
-  await user.save();
+  const startDate = new Date();
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() + plan.durationInDays);
 
   await Subscription.create({
-    userId: user._id,
-    plan,
-    price: plan === 'MONTHLY' ? 199 : 999,
-    startDate: new Date(),
+    userId,
+    plan: plan.key,
+    price: plan.price,
+    startDate,
     endDate,
+  });
+
+  await User.findByIdAndUpdate(userId, {
+    isPremium: true,
+    premiumExpiresAt: endDate,
   });
 
   res.json({
     success: true,
-    message: 'Premium activated (mock)',
-    premiumExpiresAt: endDate,
+    message: 'Premium activated',
+    expiresAt: endDate,
   });
 });
