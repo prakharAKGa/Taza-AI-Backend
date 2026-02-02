@@ -11,7 +11,7 @@ const subscriptionRoutes = require('./routes/subscription.routes');
 const downloadRoutes = require('./routes/download.routes');
 const app = express();
 
-
+app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors());
 

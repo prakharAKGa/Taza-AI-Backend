@@ -2,10 +2,8 @@ const User = require('../models/User');
 const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 const { getUserFeatures } = require('../utils/features');
-
-/* ======================================================
-   GET USER PROFILE
-====================================================== */
+const User = require('../models/User');
+const Download = require('../models/Download'); // ✅ ADD THIS
 exports.getProfile = catchAsync(async (req, res) => {
   const user = await User.findById(req.user.userId);
 
@@ -15,7 +13,7 @@ exports.getProfile = catchAsync(async (req, res) => {
 
   const features = getUserFeatures(user);
 
-  // 🔥 FETCH USER DOWNLOADS
+  /* ✅ FETCH USER DOWNLOADS */
   const downloads = await Download.find({
     userId: user._id,
   })
@@ -28,10 +26,9 @@ exports.getProfile = catchAsync(async (req, res) => {
     features,
     downloads,
   });
+
+
 });
-/* ======================================================
-   UPDATE USER PROFILE
-====================================================== */
 exports.updateProfile = catchAsync(async (req, res) => {
   const {
     name,
