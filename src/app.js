@@ -8,6 +8,7 @@ const errorHandler = require('./middlewares/errorHandler');
 const userRoutes = require('./routes/user.routes');
 const quoteRoutes = require('./routes/quote.routes');
 const subscriptionRoutes = require('./routes/subscription.routes');
+const downloadRoutes = require('./routes/download.routes');
 const app = express();
 
 
@@ -29,6 +30,7 @@ app.use(express.json({ limit: '10mb' }));
 
 app.use('/quotes', quoteRoutes);
 
+app.use('/downloads', downloadRoutes);
 
 app.use('/subscription', subscriptionRoutes);
 
