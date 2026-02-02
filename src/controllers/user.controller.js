@@ -2,7 +2,7 @@ const User = require('../models/User');
 const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 const { getUserFeatures } = require('../utils/features');
-const User = require('../models/User');
+
 const Download = require('../models/Download'); // ✅ ADD THIS
 exports.getProfile = catchAsync(async (req, res) => {
   const user = await User.findById(req.user.userId);
